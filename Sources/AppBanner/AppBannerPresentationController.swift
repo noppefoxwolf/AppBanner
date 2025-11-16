@@ -18,6 +18,7 @@ final class AppBannerPresentationController {
         static let springDamping: CGFloat = 0.9
         static let springVelocity: CGFloat = 0.6
         static let initialTopOffset: CGFloat = -20
+        static let initialScale: CGFloat = 0.96
     }
     
     let id: String
@@ -74,6 +75,7 @@ final class AppBannerPresentationController {
         let contentView = viewController.view!
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.alpha = 0
+        contentView.transform = CGAffineTransform(scaleX: Constants.initialScale, y: Constants.initialScale)
         contentView.isUserInteractionEnabled = true
         if dismissTiming.enabledDismissGesture {
             contentView.addGestureRecognizer(panGesture)
@@ -97,12 +99,15 @@ final class AppBannerPresentationController {
     
     private func animateIn(_ contentView: UIView, on view: UIView, completion: @escaping () -> Void) {
         topConstraint?.constant = 0
-        UIView.animate(withDuration: Constants.appearDuration, delay: 0, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: Constants.springVelocity, options: [.allowUserInteraction, .beginFromCurrentState, .curveEaseOut], animations: {
+        let animator = UIViewPropertyAnimator(duration: Constants.appearDuration, dampingRatio: Constants.springDamping) {
             contentView.alpha = 1
+            contentView.transform = .identity
             view.layoutIfNeeded()
-        }, completion: { _ in
+        }
+        animator.addCompletion { _ in
             completion()
-        })
+        }
+        animator.startAnimation()
     }
     
     private func cleanupAfterDismiss(_ contentView: UIView) {
@@ -148,12 +153,15 @@ final class AppBannerPresentationController {
         
         let contentView = viewController.view!
         top.constant = Constants.initialTopOffset
-        UIView.animate(withDuration: Constants.disappearDuration, delay: 0, options: [.allowUserInteraction, .beginFromCurrentState, .curveEaseIn], animations: {
+        let animator = UIViewPropertyAnimator(duration: Constants.disappearDuration, curve: .easeIn) {
             contentView.alpha = 0
+            contentView.transform = CGAffineTransform(scaleX: Constants.initialScale, y: Constants.initialScale)
             view.layoutIfNeeded()
-        }, completion: { [weak self] _ in
+        }
+        animator.addCompletion { [weak self] _ in
             self?.cleanupAfterDismiss(contentView)
-        })
+        }
+        animator.startAnimation()
     }
 }
 
