@@ -15,7 +15,7 @@ final class AppBannerPresentationController {
     enum Constants {
         static let appearDuration: TimeInterval = 0.5
         static let disappearDuration: TimeInterval = 0.5
-        static let springDamping: CGFloat = 0.9
+        static let springDamping: CGFloat = 0.75
         static let springVelocity: CGFloat = 0.6
         static let initialTopOffset: CGFloat = -20
         static let initialScale: CGFloat = 0.96
