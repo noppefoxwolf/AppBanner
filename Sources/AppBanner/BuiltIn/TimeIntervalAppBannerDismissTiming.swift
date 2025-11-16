@@ -13,7 +13,9 @@ public final class TimeIntervalAppBannerDismissTiming: AppBannerDismissTiming {
         stop()
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
             guard let self else { return }
-            self.delegate?.didFiredDismissTimingEvent(self)
+            DispatchQueue.main.async {
+                self.delegate?.didFiredDismissTimingEvent(self)
+            }
         }
     }
 
