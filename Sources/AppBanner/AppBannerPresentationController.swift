@@ -13,12 +13,12 @@ final class AppBannerPresentationController {
     weak var delegate: AppBannerPresentationControllerDelegate?
     
     enum Constants {
-        static let appearDuration: TimeInterval = 0.5
-        static let disappearDuration: TimeInterval = 0.3
-        static let springDamping: CGFloat = 0.75
-        static let springVelocity: CGFloat = 0.6
-        static let initialTopOffset: CGFloat = -20
-        static let initialScale: CGFloat = 0.96
+        static var appearDuration: TimeInterval { 0.5 }
+        static var disappearDuration: TimeInterval { 0.3 }
+        static var springDamping: CGFloat { 0.75 }
+        static var springVelocity: CGFloat { 0.6 }
+        static var initialTopOffset: CGFloat { -20 }
+        static var initialScale: CGFloat { 0.96 }
     }
     
     let id: String
