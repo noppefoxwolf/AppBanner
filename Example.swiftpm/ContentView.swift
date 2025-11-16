@@ -13,7 +13,7 @@ struct ContentView: View {
             Button(action: {
                 showTimeIntervalBanner()
             }) {
-                Text("TimeInterval バナーを表示")
+                Text("Show TimeInterval banner")
                     .font(.headline)
             }
             .buttonStyle(.borderedProminent)
@@ -21,7 +21,7 @@ struct ContentView: View {
             Button(action: {
                 showProgressBanner()
             }) {
-                Text("Progress バナーを表示")
+                Text("Show Progress banner")
                     .font(.headline)
             }
             .buttonStyle(.bordered)

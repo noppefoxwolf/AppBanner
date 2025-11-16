@@ -12,7 +12,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 rootView: ContentView(
                     showTimeIntervalBanner: {
                         var content = AppBannerContent()
-                        content.title = "Hello, World! (3秒で閉じます)"
+                        content.title = "Hello, World! (closes in 3 seconds)"
                         let request = AppBannerRequest(
                             identifier: UUID().uuidString,
                             content: content,
@@ -23,8 +23,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     showProgressBanner: {
                         let progress = Progress(totalUnitCount: 100)
                         var content = AppBannerContent()
-                        content.title = "Progress バナー"
-                        content.body = "完了したら自動で閉じます"
+                        content.title = "Progress Banner"
+                        content.body = "Closes automatically when finished"
                         content.progress = progress
                         let request = AppBannerRequest(
                             identifier: UUID().uuidString,
@@ -33,7 +33,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         )
                         AppBannerCenter.current().add(request)
 
-                        // 進捗のシミュレーション
+                        // Simulate progress updates
                         Task { @MainActor in
                             for i in 1...100 {
                                 try? await Task.sleep(nanoseconds: 30_000_000) // 0.03s
