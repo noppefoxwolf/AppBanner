@@ -1,5 +1,7 @@
 # AppBanner
 
+![](.github/example.gif)
+
 A lightweight banner presenter for iOS that shows a small capsule-style card at the top of the foreground window. It is built with SwiftUI for content and UIKit for presentation, and ships with simple timing helpers for auto-dismiss behavior.
 
 ## Requirements
