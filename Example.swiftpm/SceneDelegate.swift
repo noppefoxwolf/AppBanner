@@ -40,6 +40,28 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                 progress.completedUnitCount = Int64(i)
                             }
                         }
+                    },
+                    showProgressCancelBanner: {
+                        let progress = Progress(totalUnitCount: 100)
+                        var content = AppBannerContent()
+                        content.title = "Progress Banner"
+                        content.body = "Closes automatically when finished"
+                        content.progress = progress
+                        let request = AppBannerRequest(
+                            identifier: UUID().uuidString,
+                            content: content,
+                            dismissTiming: ProgressAppBannerDismissTiming(progress: progress)
+                        )
+                        AppBannerCenter.current().add(request)
+
+                        // Simulate progress updates
+                        Task { @MainActor in
+                            for i in 1...50 {
+                                try? await Task.sleep(nanoseconds: 30_000_000) // 0.03s
+                                progress.completedUnitCount = Int64(i)
+                            }
+                            progress.cancel()
+                        }
                     }
                 )
             )
@@ -57,3 +79,4 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
+

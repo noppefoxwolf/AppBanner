@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     let showTimeIntervalBanner: () -> Void
     let showProgressBanner: () -> Void
+    let showProgressCancelBanner: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
@@ -25,11 +26,19 @@ struct ContentView: View {
                     .font(.headline)
             }
             .buttonStyle(.bordered)
+            
+            Button(action: {
+                showProgressCancelBanner()
+            }) {
+                Text("Show Progress Cancel")
+                    .font(.headline)
+            }
+            .buttonStyle(.bordered)
         }
         .padding()
     }
 }
 
 #Preview {
-    ContentView(showTimeIntervalBanner: {}, showProgressBanner: {})
+    ContentView(showTimeIntervalBanner: {}, showProgressBanner: {}, showProgressCancelBanner: {})
 }

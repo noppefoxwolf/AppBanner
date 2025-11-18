@@ -48,6 +48,16 @@ public final class ProgressAppBannerDismissTiming: AppBannerDismissTiming {
                     self.dismissBanner()
                 }
             })
+        
+        isFinishedObservation = progress
+            .publisher(for: \.isCancelled)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] isFinished in
+                guard let self else { return }
+                if isFinished {
+                    self.dismissBanner()
+                }
+            })
     }
 
     public override func stop() {
