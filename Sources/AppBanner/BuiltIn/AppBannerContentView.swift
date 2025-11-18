@@ -17,63 +17,126 @@ public struct AppBannerContentView<Icon: View, Title: View, Body: View, Accessor
     let progress: Progress?
     
     public var body: some View {
-        HStack(content: {
-            icon()
-            
-            VStack(alignment: .leading) {
-                titleText()
-                    .foregroundStyle(.primary)
-                    .font(.caption)
-                    .bold()
+        BannerContainer {
+            HStack(content: {
+                icon()
                 
-                bodyText()
-                    .foregroundStyle(.secondary)
-                    .font(.caption2)
+                VStack(alignment: .leading) {
+                    titleText()
+                        .foregroundStyle(.primary)
+                        .font(.caption)
+                        .bold()
+                        .lineLimit(1)
+                    
+                    bodyText()
+                        .foregroundStyle(.secondary)
+                        .font(.caption2)
+                        .lineLimit(5)
+                }
+                
+                accessory()
+                    .buttonStyle(.bordered)
+            })
+            .padding(12)
+            .overlay(alignment: .bottom) {
+                if let progress {
+                    ProgressView(progress)
+                        .progressViewStyle(.linear)
+                        .labelsHidden()
+                }
             }
-            
-            accessory()
-                .buttonStyle(.bordered)
-        })
-        .padding(12)
-        .background(.regularMaterial)
-        .overlay(alignment: .bottom) {
-            if let progress {
-                ProgressView(progress)
-                    .progressViewStyle(.linear)
-                    .labelsHidden()
-            }
+            .frame(minWidth: 150)
         }
-        .overlay(content: {
-            Capsule()
-                .stroke(Color.white, lineWidth: 2)
-                .blendMode(.overlay)
-        })
-        .mask(Capsule())
-        .materialEffect()
-        .shadow(
-            color: .black.opacity(0.05),
-            radius: 10,
-            x: 0,
-            y: 10
-        )
-        
+        .frame(maxWidth: 300)
     }
 }
 
-
-extension View {
-    
+private struct BannerContainer<Content: View>: View {
     @ViewBuilder
-    func materialEffect() -> some View {
+    let content: () -> Content
+    
+    var body: some View {
         if #available(iOS 26.0, *) {
-            self
-                .mask(Capsule())
-                .glassEffect(.regular.interactive())
+            ModernBannerContainer(content: content)
         } else {
-            self
-                .geometryGroup()
-                .background(.regularMaterial)
-                .mask(Capsule())
+            LegacyBannerContainer(content: content)
         }
     }
+}
+
+@available(iOS 26.0, *)
+private struct ModernBannerContainer<Content: View>: View {
+    @ViewBuilder
+    let content: () -> Content
+    
+    var body: some View {
+        content()
+            .mask(RoundedRectangle(cornerRadius: 24))
+            .glassEffect(
+                .regular.interactive(),
+                in: RoundedRectangle(cornerRadius: 24)
+            )
+            .shadow(
+                color: .black.opacity(0.05),
+                radius: 10,
+                x: 0,
+                y: 10
+            )
+    }
+}
+
+private struct LegacyBannerContainer<Content: View>: View {
+    @ViewBuilder
+    let content: () -> Content
+    
+    var body: some View {
+        content()
+            .background(.regularMaterial)
+            .mask(RoundedRectangle(cornerRadius: 24))
+            .overlay(content: {
+                RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.white, lineWidth: 2)
+                .blendMode(.overlay)
+            })
+            .shadow(
+                color: .black.opacity(0.05),
+                radius: 10,
+                x: 0,
+                y: 10
+            )
+    }
+}
+
+#Preview {
+    @Previewable
+    var progress = {
+        let progress = Progress()
+        progress.totalUnitCount = 100
+        progress.completedUnitCount = 50
+        return progress
+    }()
+    
+    AppBannerContentView(
+        icon: {},
+        titleText: {
+            Text("Hello, World!")
+        },
+        bodyText: {
+            Text("Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!")
+        },
+        accessory: {},
+        progress: progress
+    )
+    
+    AppBannerContentView(
+        icon: {},
+        titleText: {
+            Text("Hello, World!")
+        },
+        bodyText: {
+            Text("Hello, World!")
+        },
+        accessory: {},
+        progress: progress
+    )
 }
