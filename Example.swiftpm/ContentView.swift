@@ -4,6 +4,7 @@ struct ContentView: View {
     let showTimeIntervalBanner: () -> Void
     let showProgressBanner: () -> Void
     let showProgressCancelBanner: () -> Void
+    let showLongBodyBanner: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
@@ -34,11 +35,19 @@ struct ContentView: View {
                     .font(.headline)
             }
             .buttonStyle(.bordered)
+
+            Button(action: {
+                showLongBodyBanner()
+            }) {
+                Text("Show Long Body banner")
+                    .font(.headline)
+            }
+            .buttonStyle(.bordered)
         }
         .padding()
     }
 }
 
 #Preview {
-    ContentView(showTimeIntervalBanner: {}, showProgressBanner: {}, showProgressCancelBanner: {})
+    ContentView(showTimeIntervalBanner: {}, showProgressBanner: {}, showProgressCancelBanner: {}, showLongBodyBanner: {})
 }

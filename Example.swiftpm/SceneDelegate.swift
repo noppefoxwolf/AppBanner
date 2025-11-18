@@ -62,6 +62,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             }
                             progress.cancel()
                         }
+                    },
+                    showLongBodyBanner: {
+                        var content = AppBannerContent()
+                        content.title = "Long Body Banner"
+                        content.body = "This is a very long body of text intended to demonstrate how the banner handles multi-line content. It should wrap across multiple lines and remain readable without truncation. You can use this to verify layout and accessibility behavior in your app."
+                        let request = AppBannerRequest(
+                            identifier: UUID().uuidString,
+                            content: content,
+                            dismissTiming: TimeIntervalAppBannerDismissTiming()
+                        )
+                        AppBannerCenter.current().add(request)
                     }
                 )
             )
