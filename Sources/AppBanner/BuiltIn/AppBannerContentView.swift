@@ -38,6 +38,7 @@ public struct AppBannerContentView<Icon: View, Title: View, Body: View, Accessor
                     .buttonStyle(.bordered)
             })
             .padding(12)
+            .frame(minWidth: 150)
             .overlay(alignment: .bottom) {
                 if let progress {
                     ProgressView(progress)
@@ -45,7 +46,6 @@ public struct AppBannerContentView<Icon: View, Title: View, Body: View, Accessor
                         .labelsHidden()
                 }
             }
-            .frame(minWidth: 150)
         }
         .frame(maxWidth: 300)
     }
